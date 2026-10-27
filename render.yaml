@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: orbit-ai
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: orbit-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: orbit-db
+    plan: free
+    databaseName: orbit
+    user: orbit_user
